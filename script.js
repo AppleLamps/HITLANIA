@@ -1,6 +1,6 @@
 // Set the launch date: January 29, 2026 at 8:00 PM EST + 7 days = February 5, 2026 at 8:00 PM EST
-// EST is UTC-5
-const launchDate = new Date('February 5, 2026 20:00:00 EST');
+// EST is UTC-5, so 8:00 PM EST = 1:00 AM UTC the next day
+const launchDate = new Date('2026-02-06T01:00:00Z');
 
 function updateCountdown() {
     const now = new Date();
@@ -32,7 +32,7 @@ function updateCountdown() {
 
 function animateValue(id, newValue) {
     const element = document.getElementById(id);
-    const currentValue = parseInt(element.textContent);
+    const currentValue = parseInt(element.textContent, 10) || 0;
     
     if (currentValue !== newValue) {
         element.style.transform = 'scale(1.2)';
