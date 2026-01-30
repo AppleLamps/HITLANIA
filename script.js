@@ -9,7 +9,6 @@ const secondsEl = document.getElementById('seconds');
 const notifyForm = document.getElementById('notify-form');
 const emailInput = document.getElementById('email-input');
 
-// Store previous values for change detection
 let prevValues = { days: null, hours: null, minutes: null, seconds: null };
 
 function updateCountdown() {
@@ -46,7 +45,7 @@ function setCountdownValue(element, value, key) {
 
         setTimeout(() => {
             element.classList.remove('changed');
-        }, 200);
+        }, 150);
 
         prevValues[key] = value;
     }
@@ -60,83 +59,28 @@ if (notifyForm) {
         const email = emailInput.value.trim();
 
         if (email && isValidEmail(email)) {
-            // Add success state
             notifyForm.classList.add('success');
 
-            // Update button text
             const btn = notifyForm.querySelector('.notify-btn');
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<span>Subscribed!</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+            btn.innerHTML = '<span>Done</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
 
-            // Update hint text
             const hint = document.querySelector('.notify-hint');
             if (hint) {
-                hint.textContent = "You're on the list! We'll notify you at launch.";
+                hint.textContent = "We'll be in touch.";
             }
 
-            // Disable form
             emailInput.disabled = true;
             btn.disabled = true;
-
-            // Store email (in real app, send to backend)
-            console.log('Email subscribed:', email);
         }
     });
 }
 
 function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
-    // Initial countdown update
     updateCountdown();
-
-    // Update every second
     setInterval(updateCountdown, 1000);
-
-    // Add staggered fade-in animation to features
-    const features = document.querySelectorAll('.feature');
-    features.forEach((feature, index) => {
-        feature.style.opacity = '0';
-        feature.style.transform = 'translateY(20px)';
-        feature.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-
-        setTimeout(() => {
-            feature.style.opacity = '1';
-            feature.style.transform = 'translateY(0)';
-        }, 200 + (index * 100));
-    });
-
-    // Smooth scroll for any anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    });
-});
-
-// Intersection Observer for scroll animations (if needed for future sections)
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
-    });
-}, observerOptions);
-
-// Observe any elements with .animate-on-scroll class
-document.querySelectorAll('.animate-on-scroll').forEach(el => {
-    observer.observe(el);
 });
