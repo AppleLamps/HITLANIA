@@ -42,15 +42,23 @@ function formatNumber(num) {
 function setCountdownValue(element, value, key) {
     if (prevValues[key] !== value) {
         element.textContent = value;
-        element.classList.add('changed');
-
-        setTimeout(() => {
-            element.classList.remove('changed');
-        }, 200);
-
         prevValues[key] = value;
     }
 }
+
+// Interactive background effect
+document.addEventListener('mousemove', (e) => {
+    const shapes = document.querySelectorAll('.shape');
+    const x = e.clientX / window.innerWidth;
+    const y = e.clientY / window.innerHeight;
+
+    shapes.forEach((shape, index) => {
+        const factor = (index + 1) * 20;
+        const moveX = (x - 0.5) * factor;
+        const moveY = (y - 0.5) * factor;
+        shape.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+});
 
 // Form handling
 if (notifyForm) {
@@ -96,19 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update every second
     setInterval(updateCountdown, 1000);
-
-    // Add staggered fade-in animation to features
-    const features = document.querySelectorAll('.feature');
-    features.forEach((feature, index) => {
-        feature.style.opacity = '0';
-        feature.style.transform = 'translateY(20px)';
-        feature.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-
-        setTimeout(() => {
-            feature.style.opacity = '1';
-            feature.style.transform = 'translateY(0)';
-        }, 200 + (index * 100));
-    });
 
     // Smooth scroll for any anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
